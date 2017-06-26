@@ -52,3 +52,7 @@ activitylabels <- unlist(activitylabels[,2],use.names = F)
 activitylabels <- factor(activitylabels, levels = activitylabels)
 #####Substitute activity variable integers for corresponding descriptive activity label
 HAR <- activitylabels[HAR$activity]
+
+##4)Appropriately labels the data set with descriptive variable names.####
+
+...to be continued... 
