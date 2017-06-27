@@ -9,11 +9,12 @@ The purpose of this project is to demonstrate your ability to collect, work with
 
 * * *
 
-## Included Scripts and Necesary Packages
+## Included Scripts, Data and Necesary Packages
 
 |Type|Name|Usage//Description|
 |:---:|---:|---|
 |**Script**|run_analysis.R| Runs all 5 steps of analysis, prints out ongoing step & generates Codebook.md of the run.|
+|**Data**|UCI HAR Dataset | Human Activity Recognition Data collected from the accelerometers from the Samsung Galaxy S smartphone|
 |**Pkg**|reshape2|Necesary pkg for transformations happening inside `run_analysis.R`|
 |**Pkg**|dplyr| Pkg used for manual pipping and testing|
 * * *
