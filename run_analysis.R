@@ -85,7 +85,7 @@ step("[2] Extracting mean and standard deviation measurements for each record.")
 meanStdCols <- featureNames[grep("(mean|std)\\(\\)",featureNames)]
 SubsetCols <- c(keyCols,as.character(meanStdCols))
 meanstdData <- completeData[SubsetCols]
-codebook("* subsetted `completeData` into `meanstdData` keeping only the key columns and features containing `std` or `mean`, dimensions: ", nrow(meanstdData)," x ",ncol(meanstdData))
+codebook("* subsetted `completeData` into `meanstdData` keeping only the key columns and features containing `std` or `mean`, dimensions: `", nrow(meanstdData)," x ",ncol(meanstdData),"`")
 
 
 ##3) Uses descriptive activity names to name the activities in the data set ####
