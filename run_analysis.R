@@ -136,11 +136,12 @@ codebook("`tidyData` loaded in memory, dimensions: `",nrow(tidyData)," x ",ncol(
 outputpath <- file.path(DatasetDir,"tidyData.txt")
 step("\t- Writing \"tidyData\" to \" ",outputpath,"\"")
 write.table(tidyData,outputpath,row.names = F,col.names = T,quote = F)
-codebook("* Dumped `tidyData` to file  `",outputpath,"`")
+codebook("* Dumped `tidyData` to file  `./",outputpath,"`")
 
-step("Writing Variable Desription tables to \".\\CodeBook.md\"")
+step("[ ] Writing Variable Desription tables to \".\\CodeBook.md\"")
 ## Code Book Variables Description Dump####
 
+codebook("* * *")
 codebook("")
 codebook("## `moltenData` Variable")
 codebook("### Identifier Columns")
@@ -178,3 +179,4 @@ tidyDataCols <- names(tidyData[,-(1:2)])
 for(cols in tidyDataCols){
     codebook("|",cols,"| Mean value of this feature, num (range: ",range(tidyData[cols])[1],":",range(tidyData[cols])[2],")")
 }
+step("[ ] Codebook finished and ready")

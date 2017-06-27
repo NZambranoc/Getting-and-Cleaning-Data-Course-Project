@@ -9,7 +9,7 @@ The purpose of this project is to demonstrate your ability to collect, work with
 
 * * *
 
-## Included Scripts and Packages
+## Included Scripts and Necesary Packages
 
 |Type|Name|Usage//Description|
 |:---:|---:|---|
@@ -18,7 +18,7 @@ The purpose of this project is to demonstrate your ability to collect, work with
 |**Pkg**|dplyr| Pkg used for manual pipping and testing|
 
 ## How to use:
-### Install `run_analysis` dependent packages
+### Install `run_analysis`'s dependent packages
 * reshape2
 * dplyr
 

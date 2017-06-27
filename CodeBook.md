@@ -1,5 +1,5 @@
 # Peer Reviewed Assignment Code Book
-generated 2017-06-27 16:36:22 during sourcing of `run_analysis.R`
+generated 2017-06-27 16:43:10 during sourcing of `run_analysis.R`
 
 ## Actions performed on data:
 * merging all test  and training datasets files into one dataset: `completeData`
@@ -10,7 +10,8 @@ generated 2017-06-27 16:36:22 during sourcing of `run_analysis.R`
 * Splited `feature variable` into its atomic components (7), each in a different column, and merged it to `moltenData`, dimensions: `679734 x 11`
 * Casted `moltedData` into `tidyData` averaging each variable for each activity and each subject dimensions: `180 x 68`
 `tidyData` loaded in memory, dimensions: `180 x 68`
-* Dumped `tidyData` to file  `UCI HAR Dataset/tidyData.txt`
+* Dumped `tidyData` to file  `./UCI HAR Dataset/tidyData.txt`
+* * *
 
 ## `moltenData` Variable
 ### Identifier Columns
