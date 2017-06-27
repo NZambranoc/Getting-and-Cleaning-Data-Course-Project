@@ -120,7 +120,7 @@ rm(splitVars)
 rm(variables)
 rm(variablesNames)
 
-codebook("* Split `feature variable`` into its atomic components (7), each in a different column, and merged it to `moltenData`, dimensions : ", nrow(moltenData)," x ",ncol(moltenData))
+codebook("* Split `feature variable` into its atomic components (7), each in a different column, and merged it to `moltenData`, dimensions : ", nrow(moltenData)," x ",ncol(moltenData))
 
 # tidyData
 
