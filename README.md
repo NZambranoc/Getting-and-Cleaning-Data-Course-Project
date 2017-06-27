@@ -28,4 +28,5 @@ The purpose of this project is to demonstrate your ability to collect, work with
 * Generates a new `CodeBook.md` for the run
 * Outputs variables to the Global_env: `completeData`,`moltenData` & `tidyData`\
 	Detailed info on these variable in `.\CodeBook.md\`
+*Dumps `tidyData` to `.\UCI HAR Dataset\tidyData.txt`
 
