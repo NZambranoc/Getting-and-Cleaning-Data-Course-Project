@@ -23,13 +23,23 @@ codebook("")
 
 codebook("## Actions performed on data:")
 
-#Identify UCI HAR Dataset Directory data files ignoring "Inertial Signals" folders
+# Download & Identify UCI HAR Dataset Directory data files ignoring "Inertial Signals" folders #####
 DatasetDir <- "UCI HAR Dataset"
+datasetUrl <- "https://d396qusza40orc.cloudfront.net/getdata%2Fprojectfiles%2FUCI%20HAR%20Dataset.zip"
+
+if(!file.exists(DatasetDir)){dir.create(DatasetDir)}
+download.file(datasetUrl,destfile="./Dataset.zip")
+
+# Unzip dataSet to /data directory
+unzip(zipfile="./Dataset.zip",exdir=DatasetDir)
+
+
+
 dirList <- list.files(DatasetDir,recursive = T)
 FilesDirList <- dirList[grepl("(_test|_train)",dirList) & !grepl("Inertial Signals",dirList)]
 
 
-# Load all train & test .txt files into memory
+# Load all train & test .txt files into memory#####
 step("loading .txt files:")
 for(File in FilesDirList){
     tablename <- paste0("data_",sub("^.*/(.*)\\..*$","\\1",File))
