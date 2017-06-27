@@ -77,15 +77,15 @@ step("\t- Combining subject, activity & features datasets")
 completeData <- cbind(data_subject,data_y, data_x)
 
 
-step("\t - \"completeData\" loaded in memory: ", nrow(completeData),"` x `",ncol(completeData))
-codebook("* `completeData` loaded in memory, dimensions: `", nrow(completeData),"` x `",ncol(completeData),"`")
+step("\t - \"completeData\" loaded in memory: ", nrow(completeData)," x ",ncol(completeData))
+codebook("* `completeData` loaded in memory, dimensions: `", nrow(completeData)," x ",ncol(completeData),"`")
 
 ##2) Extracts only the measurements on the mean and standard deviation for each measurement.####
 step("[2] Extracting mean and standard deviation measurements for each record.")
 meanStdCols <- featureNames[grep("(mean|std)\\(\\)",featureNames)]
 SubsetCols <- c(keyCols,as.character(meanStdCols))
 meanstdData <- completeData[SubsetCols]
-codebook("* subsetted `completeData` into `meanstdData` keeping only the key columns and features containing `std` or `mean`, dimensions: ", nrow(meanstdData),"` x `",ncol(meanstdData))
+codebook("* subsetted `completeData` into `meanstdData` keeping only the key columns and features containing `std` or `mean`, dimensions: ", nrow(meanstdData)," x ",ncol(meanstdData))
 
 
 ##3) Uses descriptive activity names to name the activities in the data set ####
@@ -96,13 +96,13 @@ activitylabels <- read.table(activityFile,stringsAsFactors = F)[,2]
 activitylabels <- factor(activitylabels, levels = activitylabels)
 #####Substitute activity variable integers for corresponding descriptive activity label
 meanstdData$activity_id <- activitylabels[meanstdData$activity_id]
-codebook("* Substituted activity variable ids for its corresponding descriptive activity label, dimensions: `", nrow(meanstdData),"` x `",ncol(meanstdData),"`")
+codebook("* Substituted activity variable ids for its corresponding descriptive activity label, dimensions: `", nrow(meanstdData)," x ",ncol(meanstdData),"`")
 
 
 ##4)Appropriately labels the data set with descriptive variable names.####
 step("[4] Appropriately labeling the data set with descriptive variable names.")
 moltenData <-  melt(meanstdData,keyCols)
-codebook("* melted `meanstdData` into `moltenData`, based on key columns, dimensions: `", nrow(moltenData),"` x `",ncol(moltenData),"`")
+codebook("* melted `meanstdData` into `moltenData`, based on key columns, dimensions: `", nrow(moltenData)," x ",ncol(moltenData),"`")
 
 #Split feature names into its atomic components
 markedVarParts<- gsub("^(f|t)(Body|Gravity|BodyBody)(Acc|Gyro)(Jerk)?(Mag)?[\\-]*(mean|std|meanFreq)[\\(\\)\\-]*(X|Y|Z)?","\\1|\\2|\\3|\\4|\\5|\\6|\\7|",moltenData$variable)
@@ -120,7 +120,7 @@ rm(splitVars)
 rm(variables)
 rm(variablesNames)
 
-codebook("* Split `feature variable` into its atomic components (7), each in a different column, and merged it to `moltenData`, dimensions: `", nrow(moltenData),"` x `",ncol(moltenData),"`")
+codebook("* Split `feature variable` into its atomic components (7), each in a different column, and merged it to `moltenData`, dimensions: `", nrow(moltenData)," x ",ncol(moltenData),"`")
 
 # tidyData
 
