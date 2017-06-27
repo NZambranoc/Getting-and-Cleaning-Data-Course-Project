@@ -16,7 +16,7 @@ The purpose of this project is to demonstrate your ability to collect, work with
 |**Script**|run_analysis.R| Runs all 5 steps of analysis, prints out ongoing step & generates Codebook.md of the run.|
 |**Pkg**|reshape2|Necesary pkg for transformations happening inside `run_analysis.R`|
 |**Pkg**|dplyr| Pkg used for manual pipping and testing|
-
+* * *
 ## How to use:
 ### Install `run_analysis`'s dependent packages
 * reshape2
