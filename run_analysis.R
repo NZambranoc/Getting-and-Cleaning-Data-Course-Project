@@ -28,7 +28,7 @@ dirList <- list.files(DatasetDir,recursive = T)
 FilesDirList <- dirList[grepl("(_test|_train)",dirList) & !grepl("Inertial Signals",dirList)]
 
 
-codebook("* merging all test  and training datasets files into one dataset: \"completeData\"")
+codebook("* merging all test  and training datasets files into one dataset: `completeData`")
 # Load all train & test .txt files into memory
 step("loading .txt files:")
 for(File in FilesDirList){
@@ -75,7 +75,7 @@ completeData <- cbind(data_subject,data_y, data_x)
 
 
 step("\t - \"completeData\" loaded in memory: ", nrow(completeData)," x ",ncol(completeData))
-codebook("* \"completeData\" loaded in memory, dimensions: ", nrow(completeData)," x ",ncol(completeData))
+codebook("* `completeData` loaded in memory, dimensions: ", nrow(completeData)," x ",ncol(completeData))
 
 
 
