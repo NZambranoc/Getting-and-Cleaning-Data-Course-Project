@@ -24,6 +24,7 @@ The purpose of this project is to demonstrate your ability to collect, work with
 * dplyr
 
 ### Source `run_analysis.R`
+* Downloads necesary Datasets
 * Loads package dependencies
 * Generates a new `CodeBook.md` for the run
 * Outputs variables to the Global_env: `completeData`,`moltenData` & `tidyData`\
