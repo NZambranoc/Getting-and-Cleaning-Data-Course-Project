@@ -28,7 +28,6 @@ dirList <- list.files(DatasetDir,recursive = T)
 FilesDirList <- dirList[grepl("(_test|_train)",dirList) & !grepl("Inertial Signals",dirList)]
 
 
-codebook("* merging all test  and training datasets files into one dataset: `completeData`")
 # Load all train & test .txt files into memory
 step("loading .txt files:")
 for(File in FilesDirList){
@@ -40,12 +39,14 @@ for(File in FilesDirList){
     rm(table)
 }
 
+codebook("* merging all test  and training datasets files into one dataset: `completeData`")
 ##1) Merge the training and the test sets to create one data set####
 step("[1] Merging the training and the test sets to create one data set.")
 
-#Combine all _test and _train dataset pairs by row
+## Combine all _test and _train dataset pairs by row
 keyCols <- character() #Vector containing key vars col names
 
+#Subject data
 step("\t- Combining test& train subjects sets")
 data_subject <- rbind(data_subject_test,data_subject_train)
 names(data_subject) <- "subject"
@@ -53,6 +54,7 @@ keyCols <- c(keyCols,names(data_subject))
 rm(data_subject_test)
 rm(data_subject_train)
 
+#Activity data
 step("\t- Combining test & train subject sets")
 data_y <- rbind(data_y_test,data_y_train)
 names(data_y) <- "activity_id"
@@ -60,6 +62,7 @@ keyCols <- c(keyCols,names(data_y))
 rm(data_y_test)
 rm(data_y_train)
 
+#Measuraments data
 step("\t- Combining test & train features sets")
 data_x <- rbind(data_X_test,data_X_train)
 featureFile <- file.path(DatasetDir,"features.txt")
@@ -67,7 +70,7 @@ featureNames <- read.table(featureFile)[,2]
 names(data_x) <- featureNames
 rm(data_X_test)
 rm(data_X_train)
-rm(featureNames)
+
 
 #Combine all Columns of the row-combined datasets into a single one
 step("\t- Combining subject, activity & features datasets")
@@ -77,60 +80,49 @@ completeData <- cbind(data_subject,data_y, data_x)
 step("\t - \"completeData\" loaded in memory: ", nrow(completeData)," x ",ncol(completeData))
 codebook("* `completeData` loaded in memory, dimensions: ", nrow(completeData)," x ",ncol(completeData))
 
+##2) Extracts only the measurements on the mean and standard deviation for each measurement.####
+step("[2] Extracting mean and standard deviation measurements for each record.")
+meanStdCols <- featureNames[grep("(mean|std)\\(\\)",featureNames)]
+SubsetCols <- c(keyCols,as.character(meanStdCols))
+meanstdData <- completeData[SubsetCols]
+codebook("* subsetted `completeData` into `meanstdData` keeping only the key columns and features containing `std` or `mean`, dimensions : ", nrow(meanstdData)," x ",ncol(meanstdData))
 
 
+##3) Uses descriptive activity names to name the activities in the data set ####
+step("[3] Using descriptive activity names instead of activity ids")
+#####Load activity lables factor
+activityFile <- file.path(DatasetDir,"activity_labels.txt")
+activitylabels <- read.table(activityFile,stringsAsFactors = F)[,2]
+activitylabels <- factor(activitylabels, levels = activitylabels)
+#####Substitute activity variable integers for corresponding descriptive activity label
+meanstdData$activity_id <- activitylabels[meanstdData$activity_id]
+codebook("* Substituted activity variable ids for its corresponding descriptive activity label, dimensions:", nrow(meanstdData)," x ",ncol(meanstdData))
 
-# 
-# ##### Common usage values==============================
-# #Load feature variable names tables
-# varnames <- read_table2("UCI HAR Dataset/features.txt",col_names = F, col_types = list("c","c"))
-# varnames <- unlist(varnames[,2],use.names = F)
-# 
-# ##### Load Test datasets===================
-# #Load test dataset subject identifier
-# test_subjectid <- read_table2("UCI HAR Dataset/test/subject_test.txt", col_names = F, col_types = "i")
-# test_subjectid <- unlist(test_subjectid,use.names = F)
-# #Load test records activity label
-# test_activitylabel <- read_table2("UCI HAR Dataset/TEST/y_test.txt", col_names = F, col_types = "i")
-# test_activitylabel <- unlist(test_activitylabel, use.names = F)
-# #Load test dataset feature  values
-# test <- suppressMessages(suppressWarnings(read_table2("UCI HAR Dataset/test/X_test.txt", col_names = varnames)))
-# #Bind test records to test_subjectid and test_activitylabel
-# test <- cbind(subjectid=test_subjectid, test, activity=test_activitylabel)
-# 
-# ##### Load train dataset====================
-# #Load train dataset subject identifier
-# train_subjectid <- read_table2("UCI HAR Dataset/train/subject_train.txt", col_names = F, col_types = "i")
-# train_subjectid <- unlist(train_subjectid,use.names = F)
-# #Load test records activity label
-# train_activitylabel <- read_table2("UCI HAR Dataset/train/y_train.txt", col_names = F, col_types = "i")
-# train_activitylabel <- unlist(train_activitylabel, use.names = F)
-# 
-# #Load training dataset feature values
-# train <- suppressMessages(suppressWarnings(
-#     read_table2("UCI HAR Dataset/train/X_train.txt", col_names = varnames)
-# ))
-# #bind values to subject identifier
-# train <- cbind(subjectid=train_subjectid, train,activity=train_activitylabel)
-# 
-# #####Bind test and train datasets -----
-# HAR <- rbind(test,train)
-# 
-# ##2) Extracts only the measurements on the mean and standard deviation for each measurement.####
-# meanStdFeatureColumns <- varnames[grep("(mean|std)\\(\\)",varnames)]
-# HAR <- HAR[c("subjectid",meanStdFeatureColumns,"activity")]
-# 
-# ##3) Uses descriptive activity names to name the activities in the data set ####
-# #####Load activity lables factor
-# activitylabels <- read_table2("UCI HAR Dataset/activity_labels.txt",col_names = F,col_types = "ic")
-# activitylabels <- unlist(activitylabels[,2],use.names = F)
-# activitylabels <- factor(activitylabels, levels = activitylabels)
-# #####Substitute activity variable integers for corresponding descriptive activity label
-# HAR$activity <- activitylabels[HAR$activity]
-# 
-# ##4)Appropriately labels the data set with descriptive variable names.####
-# 
-# markedVarParts<- gsub("^(f|t)(Body|Gravity|BodyBody)(Acc|Gyro)(Jerk)?(Mag)?[\\-]*(mean|std|meanFreq)[\\(\\)\\-]*(X|Y|Z)?","",x)
-# strsplit(markedVarParts,"\\|")
-# 
-# VarNameParts <- c("Domain","Acceleration Component","Sensor","Jerk","Magniture","Transformation","Axis")
+
+##4)Appropriately labels the data set with descriptive variable names.####
+step("[4] Appropriately labeling the data set with descriptive variable names.")
+moltenData <-  melt(meanstdData,keyCols)
+codebook("* melted `meanstdData` into `moltenData`, based on key columns, dimensions : ", nrow(moltenData)," x ",ncol(moltenData))
+
+#Split feature names into its atomic components
+markedVarParts<- gsub("^(f|t)(Body|Gravity|BodyBody)(Acc|Gyro)(Jerk)?(Mag)?[\\-]*(mean|std|meanFreq)[\\(\\)\\-]*(X|Y|Z)?","\\1|\\2|\\3|\\4|\\5|\\6|\\7|",moltenData$variable)
+splitVars <- strsplit(markedVarParts,"\\|")
+ncols = length(splitVars[[1]])
+nrows = length(splitVars)
+variables <- matrix(unlist(splitVars),nrow = nrows,ncol = ncols,byrow = T )[1:3,1:7]
+variables <- data.frame(variables,stringsAsFactors = F)
+variablesNames <- c("Domain","Acc_Component","Sensor","Jerk","Magnitude","Transformation","Axis")
+names(variables) <- variablesNames
+#Join variables to molten data
+moltenData <- cbind(moltenData,variables)
+rm(markedVarParts)
+rm(splitVars)
+rm(variables)
+rm(variablesNames)
+
+codebook("* Split `feature variable`` into its atomic components (7), each in a different column, and merged it to `moltenData`, dimensions : ", nrow(moltenData)," x ",ncol(moltenData))
+
+# tidyData
+
+
+"a More programatic approach w/Code Book generator and steps printer on source"
